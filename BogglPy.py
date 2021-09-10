@@ -129,12 +129,12 @@ def play_boggle(MINUTES = 3):
     make_board()
     #start the timer
     for i in range(MINUTES):
-      min_left = MINUTES - i
-      if min_left > 1:
-        print(f'{min_left} minutes remain')
-      else:
-        print('Only one minute left')
-      sleep(60)
+        min_left = MINUTES - i
+        if min_left > 1:
+            print(f'{min_left} minutes remain')
+        else:
+            print('Only one minute left')
+        sleep(60)
     
     print('##### Time is over ######')
 
