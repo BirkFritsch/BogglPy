@@ -22,26 +22,35 @@ def grouper(iterable, n, fillvalue=' '):
 
 
 
-def make_board():
+def make_board(extra_line=True, spacer_num = 4):
     """
-    Prints a random 4x4 boggle board in the console. 
+    Creates a random 4x4 boggle board as string. 
 
     Returns
     -------
-    None.
+    field : str
 
     """
     #shuffle dices
     shuffle(dices)
+
     #create random board
+    field = ''
+    spaces = ' ' * spacer_num
     for dice_row in grouper(dices, 4):
-        row = [dice_dct[i][randint(0,5)]+'  ' for i in dice_row]
+       
+        row = spaces.join((dice_dct[j][randint(0,5)] for j in dice_row))
         #adjust spacing
-        row = [_adjust_spacing(r, letter='Qu') for r in row]
+        row = _adjust_spacing(row, letter='Qu')
+
+        field += row + '\n'
         
-        #print board
-        print(*row)
-        print('')
+        #append extra line between letters
+        if extra_line:
+            field += '\n'
+        
+        
+    return field
     
     
  
@@ -95,16 +104,7 @@ def save_boards(amounts = 8):
     """
     for i in range(1,1+amounts):
         
-        #shuffle dices
-        shuffle(dices)
-        #create random board
-        field = ''
-        for dice_row in grouper(dices, 4):
-            row = '  '.join((dice_dct[j][randint(0,5)] for j in dice_row))
-            #adjust spacing
-            row = _adjust_spacing(row, letter='Qu')
-
-            field += row + '\n'
+        field = make_board(extra_line=False, spacer_num=2)
         #write to file    
         with open(f'boggle_{i}.txt', 'w') as file:
             file.writelines(field)
@@ -126,7 +126,9 @@ def play_boggle(MINUTES = 3):
 
     """
     #create the board
-    make_board()
+    field = make_board()
+    #display
+    print(field)
     #start the timer
     for i in range(MINUTES):
         min_left = MINUTES - i
@@ -139,6 +141,12 @@ def play_boggle(MINUTES = 3):
     print('##### Time is over ######')
 
 
+
+def check_words():
+    
+    raise NotImplementedError('Not defined yet')
+    
+    
 ###definition of global variables:
 
 #create dices
@@ -165,9 +173,11 @@ dice_dct = {
 }
 
 
+
+
 if __name__ == '__main__':
     
     #save 4 boards 
     save_boards(amounts = 4)
     #start a game
-    play_boggle(MINUTES = 3)
+    play_boggle(MINUTES = 1)
