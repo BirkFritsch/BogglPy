@@ -89,7 +89,7 @@ def _adjust_spacing(row, letter='Qu'):
     
 
 
-def save_boards(amounts = 8):
+def save_boards(amounts = 8, fields = 1):
     """
     Stores boggle-boards as boggle_i.txt, where i is an integer from [1; amounts].
 
@@ -97,6 +97,9 @@ def save_boards(amounts = 8):
     ----------
     amounts : int, optional
         Amount of boggle-board files to store as .txt file. The default is 8.
+        
+    fields : int, optional
+        Amount of fields written in one file. The default is 1.
 
     Returns
     -------
@@ -104,11 +107,18 @@ def save_boards(amounts = 8):
 
     """
     for i in range(1,1+amounts):
-        
-        field = make_board(extra_line=False, spacer_num=2)
+    
         #write to file    
         with open(f'boggle_{i}.txt', 'w') as file:
-            file.writelines(field)
+            
+            for j in range(fields):
+                
+                field = make_board(extra_line=False, spacer_num=2)
+            
+                file.writelines(field)
+                #add extra empty lines between fields (but not after last one)
+                if j < (fields - 1):
+                    file.write('\n'*2)
 
 
 
@@ -391,7 +401,7 @@ if __name__ == '__main__':
     #save 4 boards 
     save_boards(amounts = 4)
     #start a game
-    field = play_boggle(MINUTES = 3)
+    field = play_boggle(MINUTES = 0)
     words = input('Please enter patterns of interest separated by a space: ')
     
     #convert words to list of words
